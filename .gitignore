@@ -1,2 +1,10 @@
 
 .DS_Store
+
+bin/
+
+lib/
+
+scara_arm_calibration/__pycache__/
+
+pyvenv.cfg
