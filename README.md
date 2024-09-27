@@ -2,27 +2,27 @@
 
 This repository provides a Python-based calibration algorithm for a SCARA (Selective Compliance Articulated Robot Arm). The algorithm adjusts key variables to align the physical arm's position with a virtual model by minimizing the error between the two systems using a mathematical solver.
 
-![image](https://github.com/user-attachments/assets/a6e081bb-2251-45fe-9c38-5d8a8b95f794)
-
 ## Project Overview
 
 The calibration adjusts the following six variables:
 
-1. **Distal Arm Length**
-2. **Proximal Arm Length**
-3. **Distal Joint Angle**
-4. **Proximal Joint Angle**
-5. **Proximal Joint X Position**
-6. **Proximal Joint Y Position**
+1. **Distal Arm Length**: Length of the distal arm, from the distal joint to the end-effector.
+2. **Distal Joint Angle**: Rotation angle at the distal joint, controlling distal arm movement.
+3. **Proximal Arm Length**: Length of the proximal arm, from the base to the distal joint.
+4. **Proximal Joint Angle**: Rotation angle at the proximal joint, controlling the proximal arm's movement.
+5. **Proximal Joint X Position**: X-coordinate of the proximal joint in a 2D plane, determining horizontal placement.
+6. **Proximal Joint Y Position**: Y-coordinate of the proximal joint in a 2D plane, determining vertical placement.
 
-![image](https://github.com/user-attachments/assets/bbb03fe7-335e-4b19-92b8-c6c5534de286)
+![variables](https://github.com/user-attachments/assets/03d2e999-0a7c-4c14-84e9-0ee62090f2b8)
 
 The calibration process compares the real-world arm's X-Y coordinates with a virtual ideal model, then iteratively minimizes the difference (error) between the two by adjusting the six parameters. The goal is to ensure the SCARA arm positions accurately align with the virtual model.
 
+$$error = f(P^\circ, D^\circ, P_L, D_L, P_X, P_Y) = \sum_{pt=1}^{4} \sqrt{(Xpos_{pt} - Xtarget_{pt})^2 + (Ypos_{pt} - Ytarget_{pt})^2}$$
+
 ## Features
 
+- Uses three or more reference points on the SCARA arm’s workspace.
 - Iteratively calculates and adjusts joint positions and arm lengths.
-- Uses four reference points on the SCARA arm’s workspace.
 - Mathematical solver minimizes the error between real-world and virtual model coordinates.
 
 ## Installation
