@@ -1,6 +1,5 @@
 from scipy.optimize import minimize
 from math import cos, sin, acos, asin, radians, degrees, sqrt
-import main
 
 # Calculate the offset between the end-stops and the arm at each of the calibration points
 
@@ -27,6 +26,23 @@ def calculate_offset(num_of_points, points, initial, offset):
 
 
 def solve_for_all_variables(num_of_points, points, initial, offset):
+    """Solve the optimization problem for all variables.
+
+    The solver relies on a number of global variables (``errorX``, ``errorY``,
+    ``final_error`` and ``iteration_cycles``) so that ``main.print_results`` can
+    display them once the optimization finishes.  These globals were previously
+    initialised at import time using the number of points defined in ``main``.
+    When a different set of points was passed in, the pre-sized arrays could
+    cause index errors or stale results.  To avoid this, reinitialise the global
+    state each time this function is called using the supplied ``num_of_points``.
+    """
+
+    global errorX, errorY, iteration_cycles, final_error, initial_error
+    errorX = [0.0 for _ in range(num_of_points)]
+    errorY = [0.0 for _ in range(num_of_points)]
+    iteration_cycles = 0
+    final_error = 0
+
     def cumulative_error(params):
         P_length, D_length, P_angle, D_angle, P_positionX, P_positionY = params
         global final_error, errorX, errorY, iteration_cycles
@@ -82,10 +98,10 @@ def solve_for_all_variables(num_of_points, points, initial, offset):
 if __name__ == "__main__":
     print("Please call this code from main.py only")
 else:
-    # Global variables
+    # Global variables used by the solver.  They are initialised to empty values
+    # here and populated when ``solve_for_all_variables`` is invoked.
     initial_error = 0
-    num_of_points = len(main.Points.target)
-    errorX = [[0] for _ in range(num_of_points)]
-    errorY = [[0] for _ in range(num_of_points)]
+    errorX = []
+    errorY = []
     final_error = 0
     iteration_cycles = 0
